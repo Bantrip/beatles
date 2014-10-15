@@ -1,0 +1,9 @@
+{
+    "code": 200,
+    "msg": {
+        "list": [{
+            "cityId": 1,
+            "cityName": "上海"
+        }]
+    }
+}
