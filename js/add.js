@@ -11,9 +11,12 @@ define(function(require, exports) {
         },
 
         detailImgTpl = function(id) {
-            var tpl = '<div class="item clearfix">\
-                    <div class="upload"><input type="text" id="' + UPLOAD_IMG_ID + id + '" /></div>\
-                    <span class="glyphicon glyphicon-remove" style="cursor: pointer"></span>\
+            var tpl = '<div class="item">\
+                    <div class="con clearfix">\
+                        <div class="upload"><input type="text" id="' + UPLOAD_IMG_ID + id + '" /></div>\
+                        <span class="glyphicon glyphicon-remove" style="cursor: pointer"></span>\
+                    </div>\
+                    <div class="J_img-list"></div>\
                 </div>';
             return tpl;
         },
@@ -58,8 +61,18 @@ define(function(require, exports) {
                     buttonText: '上传',
                     height: 30,
                     swf: '/uploadify/uploadify.swf',
-                    uploader: '/uploadify/uploadify.php',
-                    width: 120
+                    uploader: '/ajax/uploadImg',
+                    width: 120,
+                    onUploadSuccess: function(file, data, res) {
+                        var wrap = $('#' + this.movieName).parents('.con').next('.J_img-list');
+                        console.log(wrap)
+                        data = JSON.parse(data)
+                        if(data.code == 200) {
+                            wrap.append('<img style="margin-top: 10px;" src=' + data.msg.url + '>')
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
                 });
 
                 imgId++;
@@ -82,7 +95,15 @@ define(function(require, exports) {
                 height: 30,
                 swf: '/uploadify/uploadify.swf',
                 uploader: '/ajax/uploadImg',
-                width: 120
+                width: 120,
+                onUploadSuccess: function(file, data, res) {
+                    data = JSON.parse(data)
+                    if(data.code == 200) {
+                        $('.J_product-img-list').append('<img style="margin-top: 10px;" src=' + data.msg.url + '>')
+                    } else {
+                        alert(data.msg);
+                    }
+                }
             });
         },
 
@@ -140,6 +161,10 @@ define(function(require, exports) {
         },
 
         initSelectLocation = function() {
+
+            var locWrap = $('.J_loc'),
+                list = $('.J_list-loc'),
+                selectedList = $('.J_list-selected-loc');
         
             $('input[name=searchType]').on('change', function() {
                 searchLocation();
@@ -149,7 +174,126 @@ define(function(require, exports) {
                 searchLocation();
             });
 
-            
+            list.on('click', 'a', function() {
+                var self = $(this),
+                    cityId = self.attr('data-cityid'),
+                    cityName = self.text();
+
+                if(self.hasClass('disable')) {
+                    return;
+                }
+
+                selectedList.append('<li><span class="name" data-cityid="' + cityId + '">' + cityName + '</span><span class="glyphicon glyphicon-remove"></span></li>')
+                self.addClass('disable');
+            });
+
+            selectedList.on('click', '.glyphicon-remove', function() {
+                var item = $(this).parent(),
+                    loc = item.find('.name'),
+                    cityId = loc.attr('data-cityid');
+
+                list.find('a').each(function(i, item) {
+                    var self = $(this);
+                    if(self.attr('data-cityid') == cityId) {
+                        self.removeClass('disable');
+                    }
+                });
+                item.remove();
+
+            });
+
+            $('.J_submit-loc').on('click', function() {
+                selectedList.find('.name').each(function(i, item) {
+                    var self = $(item),
+                        cityId = self.attr('data-cityid'),
+                        cityName = self.text();
+                        locWrap.find('dd').append('<span data-cityid="' + cityId + '">' + cityName + '</span>');
+                });
+                locWrap.removeClass('Hide');
+            });
+        },
+
+        getValue = function(item) {
+            return (item.val() + '').trim();
+        },
+
+        checkedFormData = function(data) {
+            var checked = true;
+
+            for(var i in data) {
+                var dataI = data[i];
+                if((typeof dataI == 'string' && dataI == '') || ($.isArray(dataI) && dataI.length == 0)) {
+                    checked = false;
+                    break;
+                }
+            }
+
+            return checked;
+        },
+
+        initSubmit = function() {
+            $('.J_submit').on('click', function() {
+                var data = {};
+                    
+                data.name = getValue($('.J_name'));
+                data.imgList = [];
+                data.detail = [];
+                data.price = getValue($('.J_price'));
+                data.reason = getValue($('.J_rcmd-reason'))
+                data.tagList = [];
+                data.locList = [];
+                data.buyUrl = getValue($('.J_buy-url'));
+
+                $('.J_product-img-list img').map(function(i, item) {
+                    data.imgList.push(item.src);
+                });
+
+                $('.J_detail .item').each(function(i, item) {
+                    var self = $(item),
+                        textarea = self.find('textarea');
+                    if(textarea.length > 0) {
+                        var value = getValue(textarea);
+                        if(value != '') {
+                            data.detail.push(value);
+                        }
+                    } else {
+                        self.find('.J_img-list img').each(function(i, item) {
+                            data.detail.push(item.src);
+                        });
+                    }
+
+                });
+
+                $('.J_tag .name').map(function(i, item) {console.log()
+                    data.tagList.push($(item).attr('data-tagid'));
+                });
+
+                $('.J_loc dd span').map(function(i, item) {
+                    data.locList.push($(item).attr('data-cityid'));
+                });
+
+                console.log(data)
+
+                if(!checkedFormData(data)) {
+                    alert('请把信息填写完整！');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/ajax/submitInfo',
+                    data: data,
+                    type: 'post',
+                    success: function(r) {
+                        if(r.code == 200) {
+                            alert('提交成功！');
+                            window.location = '/list.html';
+                        } else {
+                            alert(r.msg);
+                        }
+                    }
+                });
+
+            });
         };
 
     initAddDetal();
@@ -157,5 +301,6 @@ define(function(require, exports) {
     initUpload();
     initSelectTag();
     initSelectLocation();
+    initSubmit();
 
 });

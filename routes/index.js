@@ -36,13 +36,7 @@ exports.proxy = function (req, res, next) {
     } else {
         url = url.split('?')[0];
         fs.readFile('.' + url, function(err, data) {
-            if(url == '/midas/micropower/shortpromo/uploadPic') {
-                res.set({
-                  'Content-Type': 'text/html'
-                })
-            } else {
-                data = JSON.parse(data);
-            }
+            data = JSON.parse(data);
             res.send(data);
         });
     }

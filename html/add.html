@@ -27,12 +27,15 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">商品标题</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" maxlength="40" placeholder="不超过40个字"></div>
+                    <input type="text" class="form-control J_name" maxlength="40" placeholder="不超过40个字"></div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">商品图片</label>
                 <div class="col-sm-10">
-                    <input type="file" name="file_upload" id="uploadProductImg" />
+                    <div>
+                        <input type="file" name="file_upload" id="uploadProductImg" />
+                    </div>
+                    <div class="J_product-img-list"></div>
                 </div>
             </div>
             <div class="form-group">
@@ -53,7 +56,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">推荐理由</label>
                 <div class="col-sm-8">
-                    <textarea  class="form-control" cols="30" rows="5"></textarea>
+                    <textarea  class="form-control J_rcmd-reason" cols="30" rows="5"></textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -72,22 +75,20 @@
                 <label class="col-sm-2 control-label">所属目的地</label>
                 <div class="col-sm-8 form-add-result">
                     <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalLocation">编辑</button>
-                    <dl class="well selected clearfix Hide">
+                    <dl class="well selected clearfix Hide J_loc">
                         <dt>已选目的地：</dt>
-                        <dd>
-                            <p>人群：男士</p>
-                        </dd>
+                        <dd></dd>
                     </dl>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">购买链接</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control"></div>
+                    <input type="text" class="form-control J_buy-url"></div>
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-primary">提交</button>
+                    <button type="button" class="btn btn-primary J_submit">提交</button>
                 </div>
             </div>
         </form>
@@ -200,15 +201,14 @@
                         <p>已选城市</p>
                         <div class="cont">
                             <ul class="list-unstyled J_list-selected-loc">
-                                <li><span class="name" data-cityid="1">北京</span><span class="glyphicon glyphicon-remove"></span></li>
-                                <li><span class="name" data-cityid="1">北京</span><span class="glyphicon glyphicon-remove"></span></li>
+                                <!-- <li><span class="name" data-cityid="1">北京</span><span class="glyphicon glyphicon-remove"></span></li> -->
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-primary J_submit-loc" data-dismiss="modal">确定</button>
                 </div>
             </div>
         </div>

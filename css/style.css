@@ -27,6 +27,9 @@
 .form-add-result .selected dd {
   text-indent: 2em;
 }
+.form-add-result .selected dd span {
+  margin-right: 10px;
+}
 .modal-edit-tag .nav-tabs {
   float: left;
   border-bottom: none;
