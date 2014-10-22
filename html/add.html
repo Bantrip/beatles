@@ -62,23 +62,30 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">筛选Tag</label>
                 <div class="col-sm-8 form-add-result">
-                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalTag">编辑</button>
-                    <dl class="well selected clearfix Hide J_tag">
+                    <button class="btn btn-default J_btn-edit-tag" type="button">编辑</button>
+                    <dl class="well selected clearfix J_tag">
                         <dt>已选tag：</dt>
                         <dd>
                             <p>人群：<span class="tag" data-tagid="1">男士</span></p>
                         </dd>
                     </dl>
+                    <!-- <dl class="well selected clearfix Hide J_tag">
+                        <dt>已选tag：</dt>
+                    </dl> -->
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">所属目的地</label>
                 <div class="col-sm-8 form-add-result">
-                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modalLocation">编辑</button>
-                    <dl class="well selected clearfix Hide J_loc">
+                    <button class="btn btn-default J_btn-edit-loc" type="button">编辑</button>
+                    <dl class="well selected clearfix J_loc">
+                        <dt>已选目的地：</dt>
+                        <dd><span data-cityid="1">北京</span><span data-cityid="1">北京</span></dd>
+                    </dl>
+                    <!-- <dl class="well selected clearfix Hide J_loc">
                         <dt>已选目的地：</dt>
                         <dd></dd>
-                    </dl>
+                    </dl> -->
                 </div>
             </div>
             <div class="form-group">
@@ -128,37 +135,37 @@
                                 <label class="item">
                                     <input type="radio" class="input-tag" name="tag-1" data-tagid="1"> 男士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="2"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="3"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="4"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="5"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="6"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="7"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-1" data-tagid="8"> 女士</label>
                             </div>
                             <div class="tab-pane clearfix" id="profile">
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="1"> 1男士</label>
+                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="9"> 1男士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="10"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="11"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="12"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="13"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="14"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="15"> 女士</label>
                                 <label class="item">
-                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="1"> 女士</label>
+                                    <input type="radio" class="input-tag" name="tag-2" data-tagid="16"> 女士</label>
                             </div>
                         </div>
                     </div>
@@ -218,6 +225,7 @@
     <script src="../js/lib/jquery.uploadify.js"></script>
     <script src="../js/lib/bootstrap.js"></script>
     <script src="../js/lib/sea.js"></script>
+    <script src="../js/lib/lodash.js"></script>
     <script>seajs.use('./../js/add.js')</script>
 </body>
 </html>

@@ -21,11 +21,19 @@ define(function(require, exports) {
             return tpl;
         },
 
+        selectedLocTpl = function(cityList) {
+            var tpl = '';
+            cityList.forEach(function(item) {
+                tpl += ('<li><span class="name" data-cityid="' + item.cityId + '">' + item.cityName + '</span><span class="glyphicon glyphicon-remove"></span></li>');
+            });
+            return tpl;
+        },
+
         tagRtTpl = function(data) {
             var tpl = '';
 
             data.forEach(function(item, index) {
-                tpl += ('<dd>' + item.group + '：<span class="name" data-tagid="' + item.tagId + '">' + item.tag + '</span></dd>');
+                tpl += ('<p>' + item.group + '：<span class="name" data-tagid="' + item.tagId + '">' + item.tag + '</span></p>');
             });
 
             return tpl;
@@ -113,14 +121,41 @@ define(function(require, exports) {
                 tagCon = $('.J_tag-con'),
                 tagCons = tagCon.find('.tab-pane'),
                 tagRtCon = $('.J_tag'),
-                tagArr = [];
+                tagArr = [],
+
+                setCatStatus = function(index) {
+                    tagGroups.eq(index).find('.glyphicon-ok').removeClass('Hide');
+                };
+
+            $('.J_btn-edit-tag').on('click', function() {
+                var tagIdList = tagRtCon.find('.tag').map(function(i, item) {
+                    return $(item).attr('data-tagid');
+                }).get();
+
+                $('#modalTag').modal();
+                tagCon.find('.input-tag').each(function(i, item) {
+                    var self = $(item);
+                    if(tagIdList.indexOf(self.attr('data-tagid')) > -1) {
+                        self.attr('checked', 'checked');
+                    }
+                });
+
+                tagCons.each(function(index) {
+                    var self = $(this),
+                        tag = $(this).find('.input-tag:checked');
+                    if(tag.length > 0) {
+                        setCatStatus(self.index());
+                    }
+                });
+
+            });
 
             tagCon.on('change', '.input-tag', function() {
                 var self = $(this),
                     container = self.parents('.tab-pane'),
                     index = container.index();
 
-                tagGroups.eq(index).find('.glyphicon-ok').removeClass('Hide');
+                setCatStatus(index);
 
             });
 
@@ -165,6 +200,30 @@ define(function(require, exports) {
             var locWrap = $('.J_loc'),
                 list = $('.J_list-loc'),
                 selectedList = $('.J_list-selected-loc');
+
+            $('.J_btn-edit-loc').on('click', function() {
+
+                var cityList = locWrap.find('dd span').map(function(i, item) {
+                        var self = $(item);
+                        return {
+                            cityId: self.attr('data-cityid'),
+                            cityName: self.text()
+                        };
+                    }).get(),
+                    cityIdList = cityList.map(function(item) {
+                        return item.cityId;
+                    });
+
+                $('#modalLocation').modal();
+                list.find('a').each(function(i, item) {
+                    var self = $(this);
+                    if(cityIdList.indexOf(self.attr('data-cityid')) > -1) {
+                        self.addClass('disable');
+                    }
+                });
+
+                selectedList.html(selectedLocTpl(cityList));
+            });
         
             $('input[name=searchType]').on('change', function() {
                 searchLocation();
@@ -183,7 +242,10 @@ define(function(require, exports) {
                     return;
                 }
 
-                selectedList.append('<li><span class="name" data-cityid="' + cityId + '">' + cityName + '</span><span class="glyphicon glyphicon-remove"></span></li>')
+                selectedList.append(selectedLocTpl([{
+                    cityId: cityId,
+                    cityName: cityName
+                }]));
                 self.addClass('disable');
             });
 
@@ -207,7 +269,7 @@ define(function(require, exports) {
                     var self = $(item),
                         cityId = self.attr('data-cityid'),
                         cityName = self.text();
-                        locWrap.find('dd').append('<span data-cityid="' + cityId + '">' + cityName + '</span>');
+                        locWrap.find('dd').html('<span data-cityid="' + cityId + '">' + cityName + '</span>');
                 });
                 locWrap.removeClass('Hide');
             });
