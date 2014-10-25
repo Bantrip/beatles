@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>列表页</title>
+    <link rel="stylesheet" href="../css/lib/bootstrap.css">
+    <link rel="stylesheet" href="../css/lib/bootstrap-theme.css">
+    <link rel="stylesheet" href="../css/list.css"></head>
+<body>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Beatles</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="list.html">商品管理</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <!-- <form action="" class="form-horizontal">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">业务类型：</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form> -->
+        <table class="table table-bordered table-condensed table-striped J_list">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>图片</th>
+                    <th>价格</th>
+                    <th>来源</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="id">111</td>
+                    <td>啊啊啊啊啊啊啊</td>
+                    <td><img src="xx" alt=""></td>
+                    <td>17</td>
+                    <td>自营</td>
+                    <td>待审核</td>
+                    <td>
+                        <a href="" class="btn btn-link">查看</a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="J_ope" data-type="del">删除</a>
+                                    <a class="J_ope" data-type="audit">审核</a>
+                                    <a class="J_ope" data-type="reject">驳回</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="../js/lib/jquery.js"></script>
+    <script src="../js/lib/jquery.uploadify.js"></script>
+    <script src="../js/lib/bootstrap.js"></script>
+    <script src="../js/lib/sea.js"></script>
+    <script src="../js/lib/lodash.js"></script>
+    <script>seajs.use('./../js/list.js')</script>
+</body>
+</html>
