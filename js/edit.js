@@ -334,8 +334,6 @@ define(function(require, exports) {
                     data.locList.push($(item).attr('data-cityid'));
                 });
 
-                console.log(data)
-
                 if(!checkedFormData(data)) {
                     alert('请把信息填写完整！');
                     return;
