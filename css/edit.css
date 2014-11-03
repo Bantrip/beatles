@@ -1,17 +1,48 @@
 .Hide {
   display: none;
 }
-.uploadify-button {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 1px 1px rgba(0,0,0,0.075);
-  background-image: linear-gradient(to bottom, #fff 0%, #e0e0e0 100%);
-  color: #333;
-  text-align: center;
-  text-shadow: 0 1px 0 #fff;
+.Fix:after,
+.uploadify-queue:after {
+  display: block;
+  content: ' ';
+  height: 0;
+  clear: both;
 }
-.uploadify:hover .uploadify-button {
-  background-color: transparent;
+.uploadify-button {
+  border: 1px solid #aea79f;
+  border-radius: 4px;
+  background-color: #aea79f;
+  color: #fff;
+  text-align: center;
+}
+.uploadify-queue .item {
+  float: left;
+  width: 200px;
+  margin: 10px 10px 0 0;
+  background: #eee;
+}
+.uploadify-queue .item img {
+  width: 200px;
+  height: 200px;
+  border: none;
+  background: url("i/loading.gif") center center no-repeat #fff;
+}
+.uploadify-queue .item .status {
+  line-height: 30px;
+  text-align: center;
+  visibility: hidden;
+}
+.uploadify-queue .item .status .glyphicon {
+  margin-left: 5px;
+  cursor: pointer;
+}
+.uploadify-queue-item {
+  padding-right: 20px;
+  white-space: nowrap;
+}
+.uploadify-queue-item .cancel {
+  float: right;
+  margin-right: -20px;
 }
 .detail-text {
   display: inline-block;

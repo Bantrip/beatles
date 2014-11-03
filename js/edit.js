@@ -1,6 +1,16 @@
 define(function(require, exports) {
+
+    // require('uploadify');
+
     var detail = $('.J_detail'),
         UPLOAD_IMG_ID = 'uploadDesImg',
+
+        uploadItemTpl = function() {
+            return '<div class="item">\
+                        <img class="img" />\
+                        <div class="status">上传成功<span class="glyphicon glyphicon-trash" title="删除"></span></div>\
+                    </div>';
+        },
 
         detailTextTpl = function() {
             var tpl = '<div class="item">\
@@ -68,15 +78,13 @@ define(function(require, exports) {
                 $("#" + UPLOAD_IMG_ID + imgId).uploadify({
                     buttonText: '上传',
                     height: 30,
-                    swf: '/uploadify/uploadify.swf',
-                    uploader: '/ajax/uploadImg',
+                    uploader: '/bidoushi/upload',
                     width: 120,
                     onUploadSuccess: function(file, data, res) {
                         var wrap = $('#' + this.movieName).parents('.con').next('.J_img-list');
-                        console.log(wrap)
                         data = JSON.parse(data)
                         if(data.code == 200) {
-                            wrap.append('<img style="margin-top: 10px;" src=' + data.msg.url + '>')
+                            wrap.append('<img style="margin-top: 10px;" src=' + data.result + '>')
                         } else {
                             alert(data.msg);
                         }
@@ -102,16 +110,24 @@ define(function(require, exports) {
                 buttonText: '上传',
                 height: 30,
                 swf: '/uploadify/uploadify.swf',
-                uploader: '/ajax/uploadImg',
+                uploader: '/bidoushi/upload',
                 width: 120,
+                itemTemplate: uploadItemTpl(),
                 onUploadSuccess: function(file, data, res) {
-                    data = JSON.parse(data)
+                    data = JSON.parse(data);
                     if(data.code == 200) {
-                        $('.J_product-img-list').append('<img style="margin-top: 10px;" src=' + data.msg.url + '>')
+                        var queue = $('#uploadProductImg-queue'),
+                            id = file.id.split('_')[2];console.log(id)
+                        queue.find('.img').eq(id).attr('src', data.result);
+                        queue.find('.status').eq(id).css('visibility', 'visible');
                     } else {
-                        alert(data.msg);
+                        alert(data.message);
                     }
                 }
+            });
+
+            $('.J_product-img-upload').on('click', '.glyphicon-trash', function() {
+                $(this).parents('.item').remove();
             });
         },
 
@@ -306,7 +322,7 @@ define(function(require, exports) {
                 data.locList = [];
                 data.buyUrl = getValue($('.J_buy-url'));
 
-                $('.J_product-img-list img').map(function(i, item) {
+                $('.J_product-img-upload img').map(function(i, item) {
                     data.imgList.push(item.src);
                 });
 
@@ -340,7 +356,7 @@ define(function(require, exports) {
                 }
 
                 $.ajax({
-                    url: '/ajax/submitInfo',
+                    url: '/bidoushi/product/update',
                     data: data,
                     type: 'post',
                     success: function(r) {
