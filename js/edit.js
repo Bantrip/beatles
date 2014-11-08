@@ -99,17 +99,10 @@ define(function(require, exports) {
             });
         },
 
-        initPrice = function() {
-            $('.J_price').on('keyup', function() {
-                this.value = this.value.replace(/\D/g, '');
-            });
-        },
-
         initUpload = function() {
             $("#uploadProductImg").uploadify({
                 buttonText: '上传',
                 height: 30,
-                swf: '/uploadify/uploadify.swf',
                 uploader: '/bidoushi/upload',
                 width: 120,
                 itemTemplate: uploadItemTpl(),
@@ -373,7 +366,6 @@ define(function(require, exports) {
         };
 
     initAddDetal();
-    initPrice();
     initUpload();
     initSelectTag();
     initSelectLocation();
