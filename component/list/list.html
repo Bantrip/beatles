@@ -1,0 +1,141 @@
+<p><a data-bind="stateRef: {path: '/edit'}" class="btn btn-default">新增商品</a></p>
+<!-- ko template: {
+    data: listStatus,
+    name: listStatus.template
+} --><!-- /ko -->
+<div data-bind="visible: !isLoading() && !isEmpty()">
+    <table class="table table-bordered table-condensed table-striped table-pdc-list">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>图片</th>
+                <th>价格</th>
+                <th>来源</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: items">
+            <tr>
+                <td class="id" data-bind="text: id"></td>
+                <td data-bind="text: name"></td>
+                <td><img data-bind="attr: {src: images[0]}"></td>
+                <td data-bind="text: price"></td>
+                <td data-bind="text: price"></td>
+                <td data-bind="text: status"></td>
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
+                        <ul class="dropdown-menu" data-bind="
+                            foreach: operate,
+                            delegateEvent: {
+                                click: {
+                                    '.ope': $parent.operate
+                                }
+                            }
+                        ">
+                            <li><a class="ope" data-bind="
+                                value: $data, text: ENV.enums.operate.mapping[$data],
+                            "></a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- ko template: {
+        data: pagination,
+        name: pagination.template
+    } --><!-- /ko -->
+</div>
+<script>
+    var properties = {
+            'pageIndex': 1,
+            'pageSize': 10,
+            'count': 0,
+            'isLoading': false,
+            'isEmpty': false
+        },
+        propertyArray = {
+            items: []
+        };
+
+    var Pagination = Component('Control.Pagination'),
+        ListStatus = Component('Control.ListStatusWrapper');
+
+    exports.model = [
+        function() {
+            var self = this;
+            dataUtil.observable(this, properties);
+            dataUtil.observableArray(this, propertyArray);
+
+            this.pagination = Pagination.fromData({
+                pageIndex: this.pageIndex,
+                pageSize: this.pageSize,
+                count: this.count
+            });
+
+            this.listStatus = ListStatus.create();
+
+            _.extend(this.listStatus, {
+                isLoading: this.isLoading,
+                isEmpty: this.isEmpty
+            });
+
+            this.pageData = DataGroup.create(this, {
+                pageIndex: 1,
+                pageSize: 10
+            });
+
+        },
+        {
+            handleState: function(query) {
+                
+                var self = this;
+
+                this.pageData.setData(query);
+
+                this.isLoading(true);
+
+                remote.list(_.extend(query, {
+                    pageIndex: this.pageIndex(),
+                    pageSize: this.pageSize()
+                }), notifyOnErrorContinue(function(err, data) {
+                    if(!err) {
+                        self.isEmpty(data.totalElements > 0 ? false : true);
+                        self.count(data.totalElements);
+                        self.items(data.content);
+                    }
+                    self.isLoading(false);
+                }));
+            },
+
+            operate: function(value, e) {
+                if(value == 'edit') {
+                    state.data({
+                        path: '/edit',
+                        query: {
+                            id: this.id
+                        }
+                    })
+                } else {
+                    var ope = ENV.enums.operate.mapping[value];
+                    if(confirm('确认' + ope + '改产品？')) {
+                        remote.operate[value]({
+                            id: this.id
+                        }, notifyOnError(function(r) {
+                            alert(ope + '成功！');
+                            window.location.reload();
+                        }));    
+                    }
+                }
+            }  
+        }
+    ];
+</script>
+<style>
+    .table-pdc-list img {
+        width: 300px;
+    }
+</style>

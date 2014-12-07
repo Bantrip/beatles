@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>    
+    <head>
+        <meta charset="utf-8">
+        <title>Remote Demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    </head>
+    
+    <body>
+        <script src="http://i1.dpfile.com/ba/account-static/0.0.1/sea-debug.js"></script>
+        <script src="http://i1.dpfile.com/ba/account-static/0.0.1/seajs-text.js"></script>
+        <script src="http://i1.dpfile.com/ba/account-static/0.0.1/seajs-config.js"></script>  
+
+        <script>
+            seajs.use('index-min');
+            
+            ENV = {}
+
+            seajs.config({
+                paths: {
+                    "remote": location.protocol + "//" + location.hostname + ":" + location.port + '/account-static/mock-server'
+                }
+            });           
+        </script>       
+    </body>
+
+</html>

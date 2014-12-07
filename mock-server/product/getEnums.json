@@ -1,0 +1,21 @@
+{
+	"code": 200,
+	"result": {
+		"mapping": {
+			"operate": [{
+				"text": "编辑",
+				"value": "edit"
+			}, {
+				"text": "删除",
+				"value": "del"
+			}, {
+				"text": "审核",
+				"value": 2
+			}, {
+				"text": "驳回",
+				"value": 3
+			}]
+		},
+		"notMapping": {}
+	}
+}

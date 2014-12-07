@@ -1,0 +1,9 @@
+[submodule "crystal"]
+	path = crystal
+	url = git@code.dianpingoa.com:f2e-ba/crystal.git
+[submodule "vendor-wrap-with-define"]
+	path = vendor-wrap-with-define
+	url = git@code.dianpingoa.com:f2e-ba/vendor-wrap-with-define.git
+[submodule "crystal-extra"]
+	path = crystal-extra
+	url = git@code.dianpingoa.com:f2e-ba/crystal-extra.git

@@ -1,0 +1,25 @@
+{
+  "name": "crystal",
+  "version": "0.0.0",
+  "description": "MVC web framework",
+  "repository": {
+    "type": "git",
+    "url": "git@code.dianpingoa.com:f2e-ba/crystal.git"
+  },
+  "keywords": [
+    "MVC"
+  ],
+  "author": "jay.yang@dianping.com",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-watch": "*",
+    "sinon": "~1.7.3",
+    "chai": "~1.7.2",
+    "sinon-chai": "~2.4.0",
+    "mocha": "~1.12.1",
+    "grunt-dpm": "0.0.4"
+  }
+}

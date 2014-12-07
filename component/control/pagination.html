@@ -1,0 +1,137 @@
+<div class="pull-right" data-bind="visible: count">
+    <ul class="pagination pull-left">
+        <li data-bind="css: { active : pageIndex() == 1 }">
+            <a href="#" data-bind="click: first">首页</a>
+        </li>
+        <li data-bind="css: { active : pageIndex() == 1 }">
+            <a href="#" data-bind="click: prev">&laquo;</a>
+        </li>
+        <!-- ko foreach: pages -->
+        <li data-bind="css: { active: $data == $parent.pageIndex() }">
+            <a href="#" class="page-index" data-bind="text: $data, click: function(item, e) {
+                $parent.handleIndexClick(item, e);
+            }"></a>
+        </li>
+        <!-- /ko -->
+        <li data-bind="css: { active : pageIndex() == pageCount() }">
+            <a href="#" data-bind="click: next">&raquo;</a>
+        </li>
+        <li data-bind="css: { active : pageIndex() == pageCount() }">
+            <a href="#" data-bind="click: last">尾页</a>
+        </li>
+    </ul>
+    <!-- ko if: changeSize -->
+    <span class="pull-left" style="margin: 20px 0 0 10px;">
+        每页 <select class="form-control" style="display: inline-block; width: 60px;" data-bind="
+            options: sizes,
+            value: pageSize,
+            event: {
+                'change': change
+            }
+        "></select> 条 共<!-- ko text: pageCount --><!-- /ko -->页
+    </span>
+    <!-- /ko -->
+</div>
+<script>
+    var properties = {
+        displayPageCount: 6
+    };
+
+    var propertyArray = {
+        sizes: [10, 20, 30, 50]
+    };
+
+    var propertyComputed = {
+        halfDisplayPageCount: function() {
+            return this.displayPageCount() / 2;
+        },
+
+        pageCount: function() {
+            return Math.ceil(this.count() / this.pageSize());
+        },
+
+        pages:  function() {
+            var 
+                pageIndex = parseInt(this.pageIndex()), 
+                count = this.pageCount(), 
+                displayPageCount = this.displayPageCount(),
+                halfDisplayPageCount = parseInt(this.halfDisplayPageCount())
+            ;
+
+            if (count > displayPageCount) {
+
+                if (pageIndex < halfDisplayPageCount) {
+                    return _.range(1, displayPageCount + 1);
+                }
+
+                if (pageIndex > count - halfDisplayPageCount) {
+                    return _.range(count - displayPageCount + 1, count + 1);
+                }
+
+                return _.range(pageIndex - halfDisplayPageCount + 1, pageIndex + halfDisplayPageCount +1);
+
+            } else {
+                return _.range(1, count + 1);
+            }
+        }
+    };
+
+    var mustBeOverride = function() {
+        throw new Error('must be override');
+    };
+
+    exports.model = [
+        function() {
+            dataUtil.observable(this, properties);
+            dataUtil.observableArray(this, propertyArray);
+
+            this.pageData = DataGroup.create(this, {
+                pageIndex: 1,
+                pageSize: 10
+            });
+
+            this.type = 'page';
+            this.changeSize = true;
+        },
+        {
+
+            setData: function(data) {
+                _.extend(this, data);
+                dataUtil.computed(this, propertyComputed);
+            },
+
+            tryChangeIndex: function(index, e) {
+                if ((e.target.parentNode.className || '').indexOf('active') === -1) {
+                    this.pageIndex(index);
+                    if(this.type == 'page') {
+                        this.change();    
+                    }
+                }
+            },
+
+            change: function() {
+                state.query(_.extend(state.query(), this.pageData.getData()));
+            },
+
+            prev: function(data, e) {
+                this.tryChangeIndex(parseInt(this.pageIndex()) - 1, e);
+            },
+
+            next: function(data, e) {
+                this.tryChangeIndex(parseInt(this.pageIndex()) + 1, e);
+            },
+
+            first: function(data, e) {
+                this.tryChangeIndex(1, e);
+            },
+
+            last: function(data, e) {
+                this.tryChangeIndex(this.pageCount(), e);
+            },
+
+            handleIndexClick: function(index, e) {
+                this.tryChangeIndex(index, e);
+            }
+        }
+    ]
+</script>

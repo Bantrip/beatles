@@ -1,0 +1,19 @@
+{
+  "name": "vendor-wrap-with-define",
+  "version": "0.0.0",
+  "description": "vendor-wrap-with-define",
+  "repository": {
+    "type": "git",
+    "url": "git@code.dianpingoa.com:f2e-ba/vendor-wrap-with-define.git"
+  },
+  "keywords": [
+    "vendor-wrap-with-define"
+  ],
+  "author": "jay.yang@dianping.com",
+  "license": "BSD",
+  "dependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-concat": "*"
+  }
+}

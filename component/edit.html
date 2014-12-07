@@ -1,0 +1,235 @@
+<div class="container">
+    <h3>发布商品</h3>
+    <form class="form-horizontal" role="form" style="margin-top: 40px;">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">商品标题</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" maxlength="40" placeholder="不超过40个字" data-bind="value: name"></div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">商品图片</label>
+            <div class="col-sm-10">
+                <div class="J_product-img-upload">
+                    <input type="file" name="file_upload" id="uploadProductImg" />
+                </div>
+                <div class="J_product-img-list product-img-list"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">文描</label>
+            <div class="col-sm-8">
+                <p>
+                    <button class="btn btn-default" type="button" style="margin-right: 10px;" data-type="0" data-bind="click: addDesc">添加文字</button>
+                    <button class="btn btn-default" type="button" data-type="2" data-bind="click: addDesc">添加图片</button>
+                </p>
+                <div class="form-detail-con" data-bind="
+                    foreach: descs,
+                    delegateEvent: {
+                        click: {
+                            '.glyphicon-remove': removeDesc
+                        }
+                    }
+                ">
+                    <!-- ko if: $data.type == 0 -->
+                    <div class="item">
+                        <textarea class="form-control detail-text" cols="30" rows="3" style="display: inline-block; width: 80%; margin-top: 5px; vertical-align: top;" data-bind="text: $data.content"></textarea>
+                        <span class="glyphicon glyphicon-remove" style="cursor: pointer"></span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: $data.type == 1 -->
+                    <div class="item">
+                        <img style="margin-top: 10px;" data-bind="attr: {src: $data.content}">
+                        <span class="glyphicon glyphicon-remove" style="cursor: pointer"></span>      
+                    </div>
+                    <!-- /ko -->
+                    <!-- ko if: $data.type == 2 -->
+                    <div class="item">
+                        <div class="con clearfix">
+                            <div class="upload"><input type="file" id="111" /></div>
+                            <span class="glyphicon glyphicon-remove" style="cursor: pointer"></span>
+                        </div>
+                        <div class="J_img-list"></div>
+                    </div>
+                    <!-- /ko -->
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">价格</label>
+            <div class="col-sm-2">
+                <input type="text" class="form-control" data-bind="value: price">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">推荐理由</label>
+            <div class="col-sm-8">
+                <textarea  class="form-control J_rcmd-reason" cols="30" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">筛选Tag</label>
+            <div class="col-sm-8 form-add-result">
+                <button class="btn btn-default J_btn-edit-tag" type="button">编辑</button>
+                <dl class="well selected clearfix J_tag">
+                    <dt>已选tag：</dt>
+                    <dd>
+                        <p>人群：<span class="tag" data-tagid="1">男士</span></p>
+                    </dd>
+                </dl>
+                <!-- <dl class="well selected clearfix Hide J_tag">
+                    <dt>已选tag：</dt>
+                </dl> -->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">所属目的地</label>
+            <div class="col-sm-8 form-add-result">
+                <button class="btn btn-default J_btn-edit-loc" type="button">编辑</button>
+                <dl class="well selected clearfix J_loc">
+                    <dt>已选目的地：</dt>
+                    <dd><span data-cityid="1">北京</span><span data-cityid="1">北京</span></dd>
+                </dl>
+                <!-- <dl class="well selected clearfix Hide J_loc">
+                    <dt>已选目的地：</dt>
+                    <dd></dd>
+                </dl> -->
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">购买链接</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control J_buy-url"></div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-primary J_submit">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    var properties = {
+            'id': '',
+            'name': '',
+            'price': '',
+            'isSubmitting': false
+        },
+
+        propertyArr = {
+            'descs': []
+        }
+
+        convertUrl = function(url) {
+            
+            var randomBy = function(under, over){ 
+               switch(arguments.length){ 
+                 case 1: return parseInt(Math.random()*under+1); 
+                 case 2: return parseInt(Math.random()*(over-under+1) + under); 
+                 default: return 0; 
+               } 
+            } 
+
+            return 'http://i' + randomBy(1, 3) + '.dpfile.com/static/events' + url;
+        };
+
+    exports.model = [
+        function() {
+            var self = this;
+
+            dataUtil.observable(this, properties);
+            dataUtil.observableArray(this, propertyArr);
+
+            this.formData = DataGroup.create(this, {
+                'id': '',
+                'name': '',
+                'price': '',
+                'isSubmitting': false,
+                'descs': []
+            });
+
+            // 上传图片配置
+            this.logoUploadConfig = {
+                url: '/midas/launch/picture/ajax/uploadPicture',
+                imageOnly: true,
+                width: 130,
+                height: 130,
+                paramName: 'picFile',
+                callback: notifyOnError(function(data) {
+                    self.logoUrl(convertUrl(data.path));
+                })
+            };
+
+            // 上传图片配置
+            this.bigLogoUploadConfig = {
+                url: '/midas/launch/picture/ajax/uploadPicture',
+                imageOnly: true,
+                width: 160,
+                height: 200,
+                paramName: 'picFile',
+                callback: notifyOnError(function(data) {
+                    self.bigLogoUrl(convertUrl(data.path));
+                })
+            };
+            
+        },
+        {
+            handleState: function(data) {
+                var self = this
+                    query = state.query();
+                this.formData.setData(data);
+
+                if(this.id()) {
+                    remote.info({
+                        id: this.id()
+                    }, notifyOnError(function(data) {
+                        self.formData.setData(data);
+                    }));    
+                }
+            },
+            addDesc: function(item, e) {
+                var type = $(e.target).attr('data-type');
+                this.descs.push({
+                    type: type,
+                    content: ''
+                });
+            },
+            removeDesc: function(item) {
+                this.descs.remove(item);
+            },
+            goBack: function() {
+                window.history.back();
+            },
+            submit: function() {
+                var self = this,
+                    brandName = (this.brandName() + '').trim(),
+                    logoUrl = this.logoUrl(),
+                    bigLogoUrl = this.bigLogoUrl(),
+                    shareTitle = (this.shareTitle() + '').trim(),
+                    shareDesc = (this.shareDesc() + '').trim();
+                    
+                if(brandName == '' || logoUrl == '' || bigLogoUrl == '' || shareTitle == '' || shareDesc == '') {
+                    alert('请把信息填写完整！');
+                    return;
+                }
+
+                this.isSubmitting(true);
+                
+                remote.brand.submit({
+                    param: {
+                        brandId: this.brandId() || 0,
+                        brandName: brandName,
+                        logoUrl: logoUrl,
+                        bigLogoUrl: bigLogoUrl,
+                        shareTitle: shareTitle,
+                        shareDesc: shareDesc
+                    }
+                }, notifyOnErrorContinue(function(err) {
+                    if(!err){
+                        window.location.href = '/midas/launch/mainAction?#/list/brand';
+                    }
+                    self.isSubmitting(false);
+                }));
+            }
+        }
+    ]
+</script>

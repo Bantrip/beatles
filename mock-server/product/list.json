@@ -1,0 +1,69 @@
+{
+	"code": 200,
+	"message": "null",
+	"result": {
+		"content": [{
+			"id": 1,
+			"name": "18岁大学生陪你游山玩水",
+			"recommand": "no zuo no die",
+			"status": 1,
+			"price": 22.30,
+			"url": "http://www.yhd.com",
+			"stock": 0,
+			"images": ["http://d7.yihaodianimg.com/N07/M01/02/26/ChEbvFRW9E2Aca1_AAFD67mmpHU46600.jpg"],
+			"pics": "http://d7.yihaodianimg.com/N07/M01/02/26/ChEbvFRW9E2Aca1_AAFD67mmpHU46600.jpg,http://d9.yihaodianimg.com/N07/M0B/14/A6/CgQI0FRR5zeAMuOeAABA6o7BXsA62300.jpg,http://d9.yihaodianimg.com/N05/M03/7E/FC/CgQI0lRTZf6AYV8jAAFkCYOAHJI56000.jpg",
+			"dests": [{
+				"id": 1,
+				"name": "三亚",
+				"type": 0
+			}, {
+				"id": 2,
+				"name": "长白山",
+				"type": 0
+			}],
+			"tags": [{
+				"id": 21,
+				"name": "儿童",
+				"group": {
+					"id": 3,
+					"name": "人群"
+				}
+			}, {
+				"id": 11,
+				"name": "电子",
+				"group": {
+					"id": 2,
+					"name": "品类"
+				}
+			}, {
+				"id": 1,
+				"name": "登山",
+				"group": {
+					"id": 1,
+					"name": "主题"
+				}
+			}],
+			"descs": [{
+				"id": 1,
+				"content": "http://d7.yihaodianimg.com/N05/M03/84/97/CgQI0lRW4ueAVzWAAAA7gYPVO4U94500.jpg",
+				"index": 1,
+				"type": 1
+			}, {
+				"id": 2,
+				"content": "买的是傻逼\\n买的是傻逼",
+				"index": 2,
+				"type": 0
+			}],
+			"operate": ["edit", "del", 2, 3]
+		}],
+		"totalElements": 2,
+		"firstPage": true,
+		"lastPage": true,
+		"totalPages": 1,
+		"last": true,
+		"size": 0,
+		"number": 0,
+		"numberOfElements": 2,
+		"first": true
+	}
+}
